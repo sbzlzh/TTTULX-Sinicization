@@ -11,8 +11,8 @@
 ¦            from the base ttt files that are provided with the ttt gamemode.                  ¦
 ¦                                                                                              ¦
 ---------------------------------------------------------------------------------------------]=]
-local CATEGORY_NAME  = "TTT Í¶Æ±"
-local gamemode_error = "µ±Ç°µÄÓÎÏ·Ä£Ê½ÔÚ×î¿Ö²ÀµÄ³ÇÕòÖĞ²¢²»Âé·³"
+local CATEGORY_NAME  = "TTT æŠ•ç¥¨"
+local gamemode_error = "å½“å‰çš„æ¸¸æˆæ¨¡å¼åœ¨æœ€ææ€–çš„åŸé•‡ä¸­å¹¶ä¸éº»çƒ¦"
 
 
 ---[Next Round Slay Voting]----------------------------------------------------------------------------
@@ -24,12 +24,12 @@ local function voteslaynrDone2( t, target, time, ply, reason )
 	if t.results[ 1 ] and t.results [ 1 ] > 0 then
 		shouldslaynr = true
 		if reason then
-			ulx.fancyLogAdmin( ply, "#A ½«ÔÊĞí #T ÔÚÏÂÒ»ÂÖ±»É±ËÀ (#s)", target, reason )
+			ulx.fancyLogAdmin( ply, "#A å°†å…è®¸ #T åœ¨ä¸‹ä¸€è½®è¢«æ€æ­» (#s)", target, reason )
 		else
-			ulx.fancyLogAdmin( ply, "#A ½«ÔÊĞí #T ÔÚÏÂÒ»ÂÖ±»É±ËÀ", target )
+			ulx.fancyLogAdmin( ply, "#A å°†å…è®¸ #T åœ¨ä¸‹ä¸€è½®è¢«æ€æ­»", target )
 		end
 	else
-		ulx.fancyLogAdmin( ply, "#A ½«²»ÔÊĞíÔÚÏÂÒ»ÂÖÉ±ËÀ #T", target )
+		ulx.fancyLogAdmin( ply, "#A å°†ä¸å…è®¸åœ¨ä¸‹ä¸€è½®æ€æ­» #T", target )
 	end
 
 	if shouldslaynr then
@@ -46,7 +46,7 @@ local function voteslaynrDone2( t, target, time, ply, reason )
             target:SetPData("slaynr_slays", nslays) --add the new slays
             --heavy lifting will be done by existing slaynr command
                         
-            target:ChatPrint("¸ù¾İÍ¶Æ±,Äã½«ÔÚÏÂÒ»ÂÖ±»É±")
+            target:ChatPrint("æ ¹æ®æŠ•ç¥¨,ä½ å°†åœ¨ä¸‹ä¸€è½®è¢«æ€")
         end
         
 	end
@@ -67,10 +67,10 @@ local function voteslaynrDone( t, target, time, ply, reason)
 	local minVotes = GetConVarNumber( "ulx_voteslaynrMinvotes" )
 	local str
 	if winner ~= 1 or winnernum < minVotes or winnernum / t.voters < ratioNeeded then
-		str = "Í¶Æ±½á¹û:ÓÃ»§½«ÔÚÏÂÒ»ÂÖ´æ»î. (" .. (results[ 1 ] or "0") .. "/" .. t.voters .. ")"
+		str = "æŠ•ç¥¨ç»“æœ:ç”¨æˆ·å°†åœ¨ä¸‹ä¸€è½®å­˜æ´». (" .. (results[ 1 ] or "0") .. "/" .. t.voters .. ")"
 	else
-		str = "Í¶Æ±½á¹û:ÓÃ»§½«ÔÚÏÂÒ»ÂÖ±»É±ËÀ,µÈ´ıÅú×¼. (" .. winnernum .. "/" .. t.voters .. ")"
-		ulx.doVote( "½ÓÊÜ½á¹û²¢É±ËÀ " .. target:Nick() .. "?", { "ÊÇ", "·ñ" }, voteslaynrDone2, 30000, { ply }, true, target, time, ply, reason )
+		str = "æŠ•ç¥¨ç»“æœ:ç”¨æˆ·å°†åœ¨ä¸‹ä¸€è½®è¢«æ€æ­»,ç­‰å¾…æ‰¹å‡†. (" .. winnernum .. "/" .. t.voters .. ")"
+		ulx.doVote( "æ¥å—ç»“æœå¹¶æ€æ­» " .. target:Nick() .. "?", { "æ˜¯", "å¦" }, voteslaynrDone2, 30000, { ply }, true, target, time, ply, reason )
 	end
 	
 	ULib.tsay( _, str ) -- TODO, color?
@@ -80,24 +80,24 @@ end
 
 function ulx.voteslaynr( calling_ply, target_ply, reason )
 	if voteInProgress then
-		ULib.tsayError( calling_ply, "ÒÑ¾­ÓĞÍ¶Æ±ÕıÔÚ½øĞĞÖĞ¡£ÇëµÈ´ıµ±Ç°µÄ½áÊø.", true )
+		ULib.tsayError( calling_ply, "å·²ç»æœ‰æŠ•ç¥¨æ­£åœ¨è¿›è¡Œä¸­ã€‚è¯·ç­‰å¾…å½“å‰çš„ç»“æŸ.", true )
 		return
 	end
 
-	local msg = "É±ËÀ " .. target_ply:Nick() .. " ÏÂ»ØºÏ?"
+	local msg = "æ€æ­» " .. target_ply:Nick() .. " ä¸‹å›åˆ?"
 	if reason and reason ~= "" then
 		msg = msg .. " (" .. reason .. ")"
 	end
 
 	ulx.doVote( msg, { "Yes", "No" }, voteslaynrDone, _, _, _, target_ply, time, calling_ply, reason )
-	ulx.fancyLogAdmin( calling_ply, "#A ÏëÔÚÏÂÒ»ÂÖÉ±ËÀ #T", target_ply )
+	ulx.fancyLogAdmin( calling_ply, "#A æƒ³åœ¨ä¸‹ä¸€è½®æ€æ­» #T", target_ply )
 end
 
 local voteslaynr = ulx.command( CATEGORY_NAME, "ulx votesnr", ulx.voteslaynr, "!votesnr" )
 voteslaynr:addParam{ type=ULib.cmds.PlayerArg }
-voteslaynr:addParam{ type=ULib.cmds.StringArg, hint="Ô­Òò", ULib.cmds.optional, ULib.cmds.takeRestOfLine}
+voteslaynr:addParam{ type=ULib.cmds.StringArg, hint="åŸå› ", ULib.cmds.optional, ULib.cmds.takeRestOfLine}
 voteslaynr:defaultAccess( ULib.ACCESS_ADMIN )
-voteslaynr:help( "¿ªÊ¼Í¶Æ±ÒÔÔÚÏÂÒ»ÂÖÉ±ËÀÄ¿±ê." )
+voteslaynr:help( "å¼€å§‹æŠ•ç¥¨ä»¥åœ¨ä¸‹ä¸€è½®æ€æ­»ç›®æ ‡." )
 if SERVER then ulx.convar( "voteslaynrSuccessratio", "0.6", _, ULib.ACCESS_ADMIN ) end -- The ratio needed for a voteslaynr to succeed
 if SERVER then ulx.convar( "voteslaynrMinvotes", "1", _, ULib.ACCESS_ADMIN ) end -- Minimum votes needed for voteslaynr
 
@@ -109,9 +109,9 @@ local function votefsDone2( t, target, time, ply, reason )
 	
 	if t.results[ 1 ] and t.results [ 1 ] > 0 then
 		shouldfs = true
-			ulx.fancyLogAdmin( ply, "#A ½«ÔÊĞí #T ±»ÆÈÅÔ¹Û.", target )
+			ulx.fancyLogAdmin( ply, "#A å°†å…è®¸ #T è¢«è¿«æ—è§‚.", target )
 	else
-		ulx.fancyLogAdmin( ply, "#A ²»ÔÊĞí #T ±»ÆÈÅÔ¹Û.", target )
+		ulx.fancyLogAdmin( ply, "#A ä¸å…è®¸ #T è¢«è¿«æ—è§‚.", target )
 	end
 
 	if shouldfs then
@@ -138,10 +138,10 @@ local function votefsDone( t, target, time, ply, reason)
 	local minVotes = GetConVarNumber( "ulx_votefsMinvotes" )
 	local str
 	if winner ~= 1 or winnernum < minVotes or winnernum / t.voters < ratioNeeded then
-		str = "Í¶Æ±½á¹û:ÓÃ»§½«±»·¢ËÍµ½¹ÛÖÚ. (" .. (results[ 1 ] or "0") .. "/" .. t.voters .. ")"
+		str = "æŠ•ç¥¨ç»“æœ:ç”¨æˆ·å°†è¢«å‘é€åˆ°è§‚ä¼—. (" .. (results[ 1 ] or "0") .. "/" .. t.voters .. ")"
 	else
-		str = "Í¶Æ±½á¹û:ÓÃ»§½«±»·¢ËÍ¸øÅÔ¹ÛÕß,µÈ´ıÅú×¼. (" .. winnernum .. "/" .. t.voters .. ")"
-		ulx.doVote( "½ÓÊÜ½á¹û²¢·¢ËÍ " .. target:Nick() .. " µ½¹ÛÖÚ?", { "ÊÇ", "·ñ" }, votefsDone2, 30000, { ply }, true, target, time, ply, reason )
+		str = "æŠ•ç¥¨ç»“æœ:ç”¨æˆ·å°†è¢«å‘é€ç»™æ—è§‚è€…,ç­‰å¾…æ‰¹å‡†. (" .. winnernum .. "/" .. t.voters .. ")"
+		ulx.doVote( "æ¥å—ç»“æœå¹¶å‘é€ " .. target:Nick() .. " åˆ°è§‚ä¼—?", { "æ˜¯", "å¦" }, votefsDone2, 30000, { ply }, true, target, time, ply, reason )
 	end
 	
 	ULib.tsay( _, str ) -- TODO, color?
@@ -151,23 +151,23 @@ end
 
 function ulx.votefs( calling_ply, target_ply, reason )
 	if voteInProgress then
-		ULib.tsayError( calling_ply, "ÒÑ¾­ÓĞÍ¶Æ±ÕıÔÚ½øĞĞÖĞ.ÇëµÈ´ıµ±Ç°µÄ½áÊø.", true )
+		ULib.tsayError( calling_ply, "å·²ç»æœ‰æŠ•ç¥¨æ­£åœ¨è¿›è¡Œä¸­.è¯·ç­‰å¾…å½“å‰çš„ç»“æŸ.", true )
 		return
 	end
 
-	local msg = "Force " .. target_ply:Nick() .. " µ½¹ÛÖÚ?"
+	local msg = "Force " .. target_ply:Nick() .. " åˆ°è§‚ä¼—?"
 	if reason and reason ~= "" then
 		msg = msg .. " (" .. reason .. ")"
 	end
 
-	ulx.doVote( msg, { "ÊÇ", "·ñ" }, votefsDone, _, _, _, target_ply, time, calling_ply, reason )
-	ulx.fancyLogAdmin( calling_ply, "#A ÏëÈÃ #T ³ÉÎªÅÔ¹ÛÕß.", target_ply )
+	ulx.doVote( msg, { "æ˜¯", "å¦" }, votefsDone, _, _, _, target_ply, time, calling_ply, reason )
+	ulx.fancyLogAdmin( calling_ply, "#A æƒ³è®© #T æˆä¸ºæ—è§‚è€….", target_ply )
 end
 
 local votefs = ulx.command( CATEGORY_NAME, "ulx votefs", ulx.votefs, "!votefs" )
 votefs:addParam{ type=ULib.cmds.PlayerArg }
-votefs:addParam{ type=ULib.cmds.StringArg, hint="Ô­Òò", ULib.cmds.optional, ULib.cmds.takeRestOfLine}
+votefs:addParam{ type=ULib.cmds.StringArg, hint="åŸå› ", ULib.cmds.optional, ULib.cmds.takeRestOfLine}
 votefs:defaultAccess( ULib.ACCESS_ADMIN )
-votefs:help( "¿ªÊ¼Í¶Æ±ÈÃÄ¿±êÇ¿ÖÆ½øÈëÅÔ¹ÛÕßÄ£Ê½." )
+votefs:help( "å¼€å§‹æŠ•ç¥¨è®©ç›®æ ‡å¼ºåˆ¶è¿›å…¥æ—è§‚è€…æ¨¡å¼." )
 if SERVER then ulx.convar( "votefsSuccessratio", "0.6", _, ULib.ACCESS_ADMIN ) end -- The ratio needed for a votefs to succeed
 if SERVER then ulx.convar( "votefsMinvotes", "1", _, ULib.ACCESS_ADMIN ) end -- Minimum votes needed for votefs
